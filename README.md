@@ -2,7 +2,7 @@
 
 MEI is a small Bukkit plugin provides ability to execute commands from database with specified conditions.
 
-MapTools is free software and available under the GPL license.
+MEI is free software and available under the GPL license.
 
 ## Configuration ##
 
