@@ -1,2 +1,18 @@
-markerFile: markers.json
-interval: 5
+# Backend type, supported: MySQL
+backend: "MySql"
+backendConfig:
+  # MySQL connection url
+  #connectionUrl: "jdbc:mysql://localhost:3306/minecraft"
+  # Or MySQL connection settings:
+  hostname: "localhost"
+  port: "3306"
+  database: "minecraft"
+  # MySQL credentials
+  username: "admin"
+  password: "password"
+  # MySQL tables names
+  queue_table: "mei_queue"
+  schedule_table: "mei_schedule"
+
+# Other settings
+interval: 60
