@@ -7,19 +7,18 @@ public abstract class CustomPlugin extends JavaPlugin {
 
     public Backend getBackend() {
         if (backend == null) {
-            this.reloadBackend();
+            this.prepareBackend();
         }
         return backend;
     }
 
-    public void reloadBackend() {
+    private void prepareBackend() {
         String packageFolder = "com.github.invictum.mei.connectors.";
         String backendType = getConfig().getString("backend", "MySql");
 
         try {
             this.backend = (Backend) Class.forName(packageFolder + backendType).newInstance();
             this.backend.setConfig(getConfig().getConfigurationSection("backendConfig").getValues(true));
-            this.backend.initBackend();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -19,6 +19,8 @@
 
 package com.github.invictum.mei;
 
+import org.bukkit.Bukkit;
+
 import java.util.logging.Logger;
 
 public class MeiPlugin extends CustomPlugin {
@@ -27,14 +29,16 @@ public class MeiPlugin extends CustomPlugin {
     @Override
     public void onEnable() {
         log = getLogger();
-        log.info("MUI plugin enabled!");
 
         saveDefaultConfig();
         getConfig().options().copyDefaults(true);
         saveConfig();
 
-        // getting backend to init it. We could remove this after debuging
-        getBackend();
+        if (!getBackend().initBackend()) {
+            log.info("MUI plugin can't establish connect to backend, so stopping plugin. Please, check MEI config file.");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
 
         EventProcessor processor = new EventProcessor(this);
         processor.runTaskTimer(this, 20, 20 * getConfig().getInt("interval", 60));
@@ -43,7 +47,6 @@ public class MeiPlugin extends CustomPlugin {
     @Override
     public void onDisable() {
         getBackend().closeBackend();
-        log.info("MUI plugin disabled!");
     }
 
 }

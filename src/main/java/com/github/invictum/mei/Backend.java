@@ -12,7 +12,7 @@ public abstract class Backend {
     /**
      * Initialize connection to backend
      */
-    public abstract void initBackend();
+    public abstract Boolean initBackend();
 
     /**
      * Close connection to backend

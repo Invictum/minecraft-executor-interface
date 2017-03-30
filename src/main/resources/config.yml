@@ -2,13 +2,9 @@
 backend: "MySql"
 backendConfig:
   # MySQL connection url
-  #connectionUrl: "jdbc:mysql://localhost:3306/minecraft"
-  # Or MySQL connection settings:
-  hostname: "localhost"
-  port: "3306"
-  database: "minecraft"
+  connectionString: "jdbc:mysql://host:3306/database"
   # MySQL credentials
-  username: "admin"
+  username: "login"
   password: "password"
   # MySQL tables names
   queue_table: "mei_queue"
