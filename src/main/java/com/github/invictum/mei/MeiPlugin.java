@@ -19,6 +19,7 @@
 
 package com.github.invictum.mei;
 
+import com.github.invictum.mei.schedule.ScheduleFacility;
 import org.bukkit.Bukkit;
 
 import java.util.logging.Logger;
@@ -35,18 +36,16 @@ public class MeiPlugin extends CustomPlugin {
         saveConfig();
 
         if (!getBackend().initBackend()) {
-            log.info("MUI plugin can't establish connect to backend, so stopping plugin. Please, check MEI config file.");
+            log.warning("MUI plugin can't establish connect to backend, so stopping plugin. Please, check MEI config file.");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-
-        EventProcessor processor = new EventProcessor(this);
-        processor.runTaskTimer(this, 20, 20 * getConfig().getInt("interval", 60));
+        ScheduleFacility.start();
     }
 
     @Override
     public void onDisable() {
+        ScheduleFacility.shutdown();
         getBackend().closeBackend();
     }
-
 }
