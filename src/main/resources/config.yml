@@ -1,6 +1,6 @@
 # Backend type, supported: MySQL
 backend: "MySql"
-backendConfig:
+MySql:
   # MySQL connection url
   connectionString: "jdbc:mysql://host:3306/database"
   # MySQL credentials

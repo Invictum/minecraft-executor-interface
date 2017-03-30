@@ -1,8 +1,8 @@
 package com.github.invictum.mei.schedule.jobs;
 
-
 import com.github.invictum.mei.Backend;
 import com.github.invictum.mei.MeiPlugin;
+import com.github.invictum.mei.connectors.AbstractBackend;
 import com.github.invictum.mei.dtos.Queue;
 import org.bukkit.Bukkit;
 import org.knowm.sundial.Job;
@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class PoolWatchJob extends Job {
 
     private Logger log = MeiPlugin.getPlugin(MeiPlugin.class).getLogger();
-    private Backend backend = MeiPlugin.getPlugin(MeiPlugin.class).getBackend();
+    private AbstractBackend backend = Backend.getInstance();
 
     @Override
     public void doRun() throws JobInterruptException {

@@ -1,49 +1,37 @@
 package com.github.invictum.mei;
 
-import com.github.invictum.mei.dtos.Queue;
+import com.github.invictum.mei.connectors.AbstractBackend;
+import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.List;
 import java.util.Map;
 
-public abstract class Backend {
+public class Backend {
+    private static AbstractBackend backend = null;
+    private static FileConfiguration config = MeiPlugin.getPlugin(MeiPlugin.class).getConfig();
 
-    private Map<String, Object> config = null;
-
-    /**
-     * Initialize connection to backend
-     */
-    public abstract Boolean initBackend();
-
-    /**
-     * Close connection to backend
-     */
-    public abstract void closeBackend();
-
-    /**
-     * Get list of queue
-     *
-     * @return List of DTO's
-     */
-    public abstract List<Queue> getQueues();
-
-    /**
-     * Remove items from of queue list by ID's
-     */
-    public abstract void removeQueues(List<String> ids);
-
-    protected void setConfig(Map<String, Object> config) {
-        this.config = config;
+    private Backend() {
     }
 
-    protected String getProperty(String key) {
-        return getProperty(key, null);
-    }
-
-    protected String getProperty(String key, String defaultValue) {
-        if (config.containsKey(key)) {
-            return config.get(key).toString();
+    public static AbstractBackend getInstance() {
+        if (backend == null) {
+            backend = getNewBackend();
         }
-        return defaultValue;
+        return backend;
+    }
+
+    private static AbstractBackend getNewBackend() {
+        String packageFolder = "com.github.invictum.mei.connectors.";
+        String backendType = config.getString("backend", "MySql");
+        AbstractBackend abstractBackend = null;
+        try {
+            abstractBackend = (AbstractBackend) Class.forName(packageFolder + backendType).getConstructor(Map.class)
+                    .newInstance(config.getConfigurationSection(backendType).getValues(true));
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return abstractBackend;
     }
 
 }

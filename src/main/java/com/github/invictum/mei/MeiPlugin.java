@@ -21,10 +21,11 @@ package com.github.invictum.mei;
 
 import com.github.invictum.mei.schedule.ScheduleFacility;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;
 
-public class MeiPlugin extends CustomPlugin {
+public class MeiPlugin extends JavaPlugin {
     private Logger log;
 
     @Override
@@ -35,7 +36,7 @@ public class MeiPlugin extends CustomPlugin {
         getConfig().options().copyDefaults(true);
         saveConfig();
 
-        if (!getBackend().initBackend()) {
+        if (!Backend.getInstance().initBackend()) {
             log.warning("MUI plugin can't establish connect to backend, so stopping plugin. Please, check MEI config file.");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
@@ -46,6 +47,6 @@ public class MeiPlugin extends CustomPlugin {
     @Override
     public void onDisable() {
         ScheduleFacility.shutdown();
-        getBackend().closeBackend();
+        Backend.getInstance().closeBackend();
     }
 }

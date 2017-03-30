@@ -1,23 +1,24 @@
 package com.github.invictum.mei.connectors;
 
-import com.github.invictum.mei.Backend;
 import com.github.invictum.mei.MeiPlugin;
 import com.github.invictum.mei.dtos.Queue;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
-import org.bukkit.Bukkit;
 import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Map;
 
-public class MySql extends Backend {
+public class MySql extends AbstractBackend {
 
     private Sql2o connection;
-    private Logger log = Bukkit.getLogger();
+
+    public MySql(Map<String, Object> config) {
+        super(config);
+    }
 
     @Override
     public Boolean initBackend() {
