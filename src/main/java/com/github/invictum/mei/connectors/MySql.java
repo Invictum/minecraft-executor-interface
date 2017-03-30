@@ -7,6 +7,7 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import org.bukkit.Bukkit;
 import org.sql2o.Connection;
+import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
 import java.io.IOException;
@@ -23,12 +24,8 @@ public class MySql extends Backend {
         String connectionString = getProperty("connectionString", "");
         String username = getProperty("username", "");
         String password = getProperty("password", "");
-        if (connectionString.isEmpty() || username.isEmpty() || password.isEmpty()) {
-            log.info("You should provide 'connectionString', 'username' and 'password' in your config file");
-            return false;
-        }
-        this.connection = new Sql2o(connectionString, username, password);
 
+        this.connection = new Sql2o(connectionString, username, password);
         return createDefaultTables();
     }
 
@@ -51,12 +48,13 @@ public class MySql extends Backend {
     @Override
     public void removeQueues(List<String> ids) {
         String sql = "DELETE FROM " + getProperty("queue_table") + " WHERE id=:id";
-        for (String id : ids) {
-            try (Connection con = connection.open()) {
-                con.createQuery(sql)
-                        .addParameter("id", id)
-                        .executeUpdate();
+        try (Connection con = connection.beginTransaction()) {
+            Query query = con.createQuery(sql);
+            for (String id : ids) {
+                query.addParameter("id", id).addToBatch();
             }
+            query.executeBatch();
+            con.commit();
         }
     }
 
