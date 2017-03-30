@@ -61,30 +61,26 @@ public class MySql extends Backend {
     }
 
     private Boolean createDefaultTables() {
-        String queueTable;
-        String scheduleTable;
-
+        String tables;
         try {
-            queueTable = Resources.toString(Resources.getResource(MeiPlugin.class, "/queue_table.sql"), Charsets.UTF_8)
-                    .replace("{queue_table_name}", getProperty("queue_table"));
-            scheduleTable = Resources.toString(Resources.getResource(MeiPlugin.class, "/schedule_table.sql"), Charsets.UTF_8)
+            tables = Resources.toString(Resources.getResource(MeiPlugin.class, "/schemes.sql"), Charsets.UTF_8)
+                    .replace("{queue_table_name}", getProperty("queue_table"))
                     .replace("{schedule_table_name}", getProperty("schedule_table"));
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
-        if (!queueTable.isEmpty()) {
-            try (Connection con = connection.open()) {
-                con.createQuery(queueTable).executeUpdate();
-            } catch (Exception ex) {
-                return false;
-            }
-            try (Connection con = connection.open()) {
-                con.createQuery(scheduleTable).executeUpdate();
-            } catch (Exception ex) {
-                return false;
+
+        for (String table : tables.split(";")) {
+            if (!table.isEmpty()) {
+                try (Connection con = connection.open()) {
+                    con.createQuery(table).executeUpdate();
+                } catch (Exception ex) {
+                    return false;
+                }
             }
         }
+
         return true;
     }
 
