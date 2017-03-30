@@ -1,10 +1,14 @@
 package com.github.invictum.mei.connectors;
 
 import com.github.invictum.mei.Backend;
+import com.github.invictum.mei.MeiPlugin;
 import com.github.invictum.mei.dtos.Queue;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
+import java.io.IOException;
 import java.util.List;
 
 public class MySql extends Backend {
@@ -22,8 +26,8 @@ public class MySql extends Backend {
             String database = getProperty("database");
             connectionUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + database;
         }
-
         this.connection = new Sql2o(connectionUrl, username, password);
+        createDefaultTables();
     }
 
     @Override
@@ -52,6 +56,30 @@ public class MySql extends Backend {
                         .addParameter("table", getProperty("queue_table"))
                         .addParameter("id", id)
                         .executeUpdate();
+            }
+        }
+    }
+
+    private void createDefaultTables() {
+        String queueTable = "";
+        String scheduleTable = "";
+
+        try {
+            queueTable = Resources.toString(Resources.getResource(MeiPlugin.class, "/template.sql"), Charsets.UTF_8)
+                    .replace("{queue_table}", getProperty("queue_table"))
+                    .replace("{schedule_table}", getProperty("schedule_table"));
+            scheduleTable = Resources.toString(Resources.getResource(MeiPlugin.class, "/template.sql"), Charsets.UTF_8)
+                    .replace("{queue_table}", getProperty("queue_table"))
+                    .replace("{schedule_table}", getProperty("schedule_table"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (!queueTable.isEmpty()) {
+            try (Connection con = connection.open()) {
+                con.createQuery(queueTable).executeUpdate();
+            }
+            try (Connection con = connection.open()) {
+                con.createQuery(scheduleTable).executeUpdate();
             }
         }
     }

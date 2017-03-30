@@ -33,7 +33,8 @@ public class MeiPlugin extends CustomPlugin {
         getConfig().options().copyDefaults(true);
         saveConfig();
 
-        getBackend().initBackend();
+        // getting backend to init it. We could remove this after debuging
+        getBackend();
 
         EventProcessor processor = new EventProcessor(this);
         processor.runTaskTimer(this, 20, 20 * getConfig().getInt("interval", 60));
