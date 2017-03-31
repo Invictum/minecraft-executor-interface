@@ -1,2 +1,14 @@
-markerFile: markers.json
-interval: 5
+# Backend type, supported: MySQL
+backend: "MySql"
+MySql:
+  # MySQL connection url
+  connectionString: "jdbc:mysql://host:3306/database"
+  # MySQL credentials
+  username: "login"
+  password: "password"
+  # MySQL tables names
+  queue_table: "mei_queue"
+  schedule_table: "mei_schedule"
+
+# Other settings
+interval: 60
