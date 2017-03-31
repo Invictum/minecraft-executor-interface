@@ -26,18 +26,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.logging.Logger;
 
 public class MeiPlugin extends JavaPlugin {
-    private Logger log;
+
+    public static Logger log() {
+        return MeiPlugin.getPlugin(MeiPlugin.class).getLogger();
+    }
 
     @Override
     public void onEnable() {
-        log = getLogger();
-
         saveDefaultConfig();
         getConfig().options().copyDefaults(true);
         saveConfig();
 
         if (!Backend.getInstance().initBackend()) {
-            log.warning("MUI plugin can't establish connect to backend, so stopping plugin. Please, check MEI config file.");
+            log().warning("Can't establish connect to backend, so stopping plugin. Please, check config file.");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }

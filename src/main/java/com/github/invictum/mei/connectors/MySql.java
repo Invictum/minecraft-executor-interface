@@ -8,7 +8,6 @@ import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -60,27 +59,21 @@ public class MySql extends AbstractBackend {
     }
 
     private Boolean createDefaultTables() {
-        String tables;
         try {
-            tables = Resources.toString(Resources.getResource(MeiPlugin.class, "/schemes.sql"), Charsets.UTF_8)
+            String tables = Resources.toString(Resources.getResource(MeiPlugin.class, "/schemes.sql"), Charsets.UTF_8)
                     .replace("{queue_table_name}", getProperty("queue_table"))
                     .replace("{schedule_table_name}", getProperty("schedule_table"));
-        } catch (IOException e) {
+            for (String table : tables.split(";")) {
+                if (!table.isEmpty()) {
+                    try (Connection con = connection.open()) {
+                        con.createQuery(table).executeUpdate();
+                    }
+                }
+            }
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-
-        for (String table : tables.split(";")) {
-            if (!table.isEmpty()) {
-                try (Connection con = connection.open()) {
-                    con.createQuery(table).executeUpdate();
-                } catch (Exception ex) {
-                    return false;
-                }
-            }
-        }
-
         return true;
     }
-
 }
