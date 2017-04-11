@@ -17,11 +17,15 @@ public class PoolWatchJob extends Job {
     public void doRun() throws JobInterruptException {
         List<String> doneIds = new ArrayList<>();
         for (Queue queue : Backend.getInstance().getQueues()) {
-            ConditionProcessor condition = new ConditionProcessor(queue.getConditions());
-            if (!condition.isValid()) {
+            boolean isApplicable = false;
+            try {
+                ConditionProcessor condition = new ConditionProcessor(queue.getConditions());
+                isApplicable = condition.isApplicable();
+            } catch (IllegalArgumentException ex) {
+                MeiPlugin.log().info("Invalid condition format: " + ex.getMessage());
                 doneIds.add(queue.getId());
             }
-            if (condition.isApplicable()) {
+            if (isApplicable) {
                 MeiPlugin.log().info("Processing of command: " + queue.getCommand());
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), queue.getCommand());
                 doneIds.add(queue.getId());

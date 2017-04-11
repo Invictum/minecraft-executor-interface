@@ -24,11 +24,10 @@ public class ConditionPool {
         return ourInstance;
     }
 
-    public ConditionInterface getCondition(String key) {
-        return conditionList.get(key);
-    }
-
-    public boolean containsKey(String key) {
-        return conditionList.containsKey(key);
+    public ConditionInterface getCondition(String key) throws IllegalArgumentException {
+        if (conditionList.containsKey(key)) {
+            return conditionList.get(key);
+        }
+        throw new IllegalArgumentException(String.format("Unsupported type of condition: '%s'", key));
     }
 }
