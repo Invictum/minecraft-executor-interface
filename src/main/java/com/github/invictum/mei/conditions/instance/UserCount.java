@@ -1,8 +1,8 @@
-package com.github.invictum.mei.conditions;
+package com.github.invictum.mei.conditions.instance;
 
 import org.bukkit.Bukkit;
 
-public class UserCount implements ConditionInterface {
+public class UserCount implements Condition {
     @Override
     public boolean checkCondition(String expression) throws IllegalArgumentException {
         try {

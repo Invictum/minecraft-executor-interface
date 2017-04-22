@@ -1,9 +1,9 @@
-package com.github.invictum.mei.conditions;
+package com.github.invictum.mei.conditions.instance;
 
 import com.github.invictum.mei.MeiPlugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class GameTime implements ConditionInterface {
+public class GameTime implements Condition {
     private JavaPlugin plugin = MeiPlugin.getPlugin(MeiPlugin.class);
 
     @Override

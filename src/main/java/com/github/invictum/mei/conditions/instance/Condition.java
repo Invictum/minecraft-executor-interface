@@ -1,5 +1,5 @@
-package com.github.invictum.mei.conditions;
+package com.github.invictum.mei.conditions.instance;
 
-public interface ConditionInterface {
+public interface Condition {
     boolean checkCondition(String expression) throws IllegalArgumentException;
 }

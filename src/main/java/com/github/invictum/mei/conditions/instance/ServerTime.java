@@ -1,6 +1,6 @@
-package com.github.invictum.mei.conditions;
+package com.github.invictum.mei.conditions.instance;
 
-public class ServerTime implements ConditionInterface {
+public class ServerTime implements Condition {
     @Override
     public boolean checkCondition(String expression) throws IllegalArgumentException {
         try {

@@ -1,9 +1,9 @@
-package com.github.invictum.mei.conditions;
+package com.github.invictum.mei.conditions.instance;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class UserOnline implements ConditionInterface {
+public class UserOnline implements Condition {
 
     @Override
     public boolean checkCondition(String expression) {

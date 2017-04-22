@@ -1,7 +1,5 @@
 package com.github.invictum.mei.conditions;
 
-import com.github.invictum.mei.ConditionPool;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

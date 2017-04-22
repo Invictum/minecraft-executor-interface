@@ -1,16 +1,16 @@
-package com.github.invictum.mei;
+package com.github.invictum.mei.conditions;
 
-import com.github.invictum.mei.conditions.ConditionInterface;
-import com.github.invictum.mei.conditions.GameTime;
-import com.github.invictum.mei.conditions.ServerTime;
-import com.github.invictum.mei.conditions.UserCount;
-import com.github.invictum.mei.conditions.UserOnline;
+import com.github.invictum.mei.conditions.instance.Condition;
+import com.github.invictum.mei.conditions.instance.GameTime;
+import com.github.invictum.mei.conditions.instance.ServerTime;
+import com.github.invictum.mei.conditions.instance.UserCount;
+import com.github.invictum.mei.conditions.instance.UserOnline;
 
 import java.util.Hashtable;
 
 public class ConditionPool {
     private static ConditionPool ourInstance = new ConditionPool();
-    private Hashtable<String, ConditionInterface> conditionList = null;
+    private Hashtable<String, Condition> conditionList = null;
 
     private ConditionPool() {
         conditionList = new Hashtable<>();
@@ -24,7 +24,7 @@ public class ConditionPool {
         return ourInstance;
     }
 
-    public ConditionInterface getCondition(String key) throws IllegalArgumentException {
+    public Condition getCondition(String key) throws IllegalArgumentException {
         if (conditionList.containsKey(key)) {
             return conditionList.get(key);
         }
