@@ -3,22 +3,26 @@ package com.github.invictum.mei.conditions.instance;
 import com.github.invictum.mei.MeiPlugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class GameTime implements Condition {
+public class GameTime extends AbstractCondition {
+
     private JavaPlugin plugin = MeiPlugin.getPlugin(MeiPlugin.class);
 
     @Override
-    public boolean checkCondition(String expression) throws IllegalArgumentException {
+    public boolean check() {
+        int requiredTime = Integer.valueOf(expression());
+        int interval = plugin.getConfig().getInt("interval", 60) * 20 + 5;
+        long currentTime = plugin.getServer().getWorlds().get(0).getTime();
+        return (currentTime + interval < requiredTime) && (currentTime - interval > requiredTime);
+    }
+
+    @Override
+    public boolean isValid() {
         try {
-            int requiredTime = Integer.valueOf(expression);
-            int interval = plugin.getConfig().getInt("interval", 60) * 20 + 5;
-            long currentTime = plugin.getServer().getWorlds().get(0).getTime();
-            if (currentTime + interval < requiredTime &&
-                    currentTime - interval > requiredTime) {
-                return true;
-            }
+            Integer.valueOf(expression());
         } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Can't parse expression for 'game_time': " + ex.getMessage());
+            MeiPlugin.log().warning("Expression for 'game_time' is wrong");
+            return false;
         }
-        return false;
+        return true;
     }
 }

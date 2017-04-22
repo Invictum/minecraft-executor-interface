@@ -1,16 +1,23 @@
 package com.github.invictum.mei.conditions.instance;
 
-public class ServerTime implements Condition {
+import com.github.invictum.mei.MeiPlugin;
+
+public class ServerTime extends AbstractCondition {
+
     @Override
-    public boolean checkCondition(String expression) throws IllegalArgumentException {
+    public boolean check() {
+        long requiredTime = Long.valueOf(expression());
+        return (System.currentTimeMillis() > requiredTime);
+    }
+
+    @Override
+    public boolean isValid() {
         try {
-            long requiredTime = Long.valueOf(expression);
-            if (System.currentTimeMillis() > requiredTime) {
-                return true;
-            }
+            Long.valueOf(expression());
         } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Can't parse expression for 'server_time': " + ex.getMessage());
+            MeiPlugin.log().warning("Expression for 'server_time' is wrong");
+            return false;
         }
-        return false;
+        return true;
     }
 }
