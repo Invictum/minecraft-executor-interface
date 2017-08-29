@@ -3,7 +3,7 @@
 
     <groupId>com.github.invictum.mei</groupId>
     <artifactId>minecraft-executor-interface</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <modelVersion>4.0.0</modelVersion>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -11,8 +11,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
+        <java.version>1.7</java.version>
     </properties>
 
     <repositories>
@@ -26,7 +25,6 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <!-- Bukkit API Version, change if out dated -->
             <version>1.10.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
             <type>jar</type>
@@ -51,8 +49,8 @@
                 <configuration>
                     <fork>true</fork>
                     <encoding>UTF-8</encoding>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
             <plugin>
