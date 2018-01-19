@@ -1,6 +1,6 @@
-package com.github.invictum.mei.conditions.instance;
+package com.github.invictum.mei.condition.instance;
 
-import com.github.invictum.mei.conditions.Condition;
+import com.github.invictum.mei.condition.Condition;
 
 public abstract class AbstractCondition implements Condition {
 
@@ -13,5 +13,10 @@ public abstract class AbstractCondition implements Condition {
     public AbstractCondition expression(String expression) {
         this.expression = expression;
         return this;
+    }
+
+    @Override
+    public boolean isValid() {
+        return true;
     }
 }

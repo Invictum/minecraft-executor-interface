@@ -1,17 +1,20 @@
-package com.github.invictum.mei.conditions.instance;
+package com.github.invictum.mei.condition.instance;
 
 import com.github.invictum.mei.MeiPlugin;
+import com.github.invictum.mei.Utils;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class GameTime extends AbstractCondition {
 
-    private JavaPlugin plugin = MeiPlugin.getPlugin(MeiPlugin.class);
+    private final FileConfiguration config = JavaPlugin.getPlugin(MeiPlugin.class).getConfig();
 
     @Override
     public boolean check() {
         int requiredTime = Integer.valueOf(expression());
-        int interval = plugin.getConfig().getInt("interval", 60) * 20 + 5;
-        long currentTime = plugin.getServer().getWorlds().get(0).getTime();
+        int interval = config.getInt("interval", 60) * 20 + 5;
+        long currentTime = Bukkit.getServer().getWorlds().get(0).getTime();
         return (currentTime + interval < requiredTime) && (currentTime - interval > requiredTime);
     }
 
@@ -20,7 +23,7 @@ public class GameTime extends AbstractCondition {
         try {
             Integer.valueOf(expression());
         } catch (NumberFormatException ex) {
-            MeiPlugin.log().warning("Expression for 'game_time' is wrong");
+            Utils.getLogger().warning("Expression for 'game_time' is wrong");
             return false;
         }
         return true;
