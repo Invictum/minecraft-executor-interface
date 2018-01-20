@@ -6,7 +6,11 @@ Minecraft Executor Interface (MEI)
 
 MEI is a Minecraft plugin provides ability to send commands for execution from external sources.
 
-For configuration details refer to [project documentation](https://dev.bukkit.org/projects/mei) page on dev.bukkit.org
+Configuration and Support
+------------
+For configuration details refer to [project documentation](https://github.com/Invictum/minecraft-executor-interface/wiki) page at Wiki section
+
+Check [project page](https://dev.bukkit.org/projects/mei) at dev.bukkit.org for support
 
 Contribution
 ------------
