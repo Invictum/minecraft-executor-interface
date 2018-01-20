@@ -1,3 +1,5 @@
 name: MEI
-main: com.github.invictum.mei.MeiPlugin
 version: 1.0.0
+description: Plugin allows to emmit command for execution from external sources. Each commmand may be powered with special execution conditions
+main: com.github.invictum.mei.MeiPlugin
+website: https://dev.bukkit.org/projects/mei
