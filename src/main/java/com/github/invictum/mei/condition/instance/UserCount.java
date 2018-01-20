@@ -1,8 +1,11 @@
-package com.github.invictum.mei.conditions.instance;
+package com.github.invictum.mei.condition.instance;
 
-import com.github.invictum.mei.MeiPlugin;
+import com.github.invictum.mei.Utils;
 import org.bukkit.Bukkit;
 
+/**
+ * Matches on exact online players
+ */
 public class UserCount extends AbstractCondition {
 
     @Override
@@ -16,7 +19,7 @@ public class UserCount extends AbstractCondition {
         try {
             Long.valueOf(expression());
         } catch (NumberFormatException ex) {
-            MeiPlugin.log().warning("Expression for 'count_user' is wrong");
+            Utils.getLogger().warning("Expression for 'count_user' is wrong");
             return false;
         }
         return true;

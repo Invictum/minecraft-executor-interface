@@ -1,53 +1,46 @@
-/*
- * Copyright 2013 Moritz Hilscher
- *
- * This file is part of Minecraft Executor Interface (aka MEI).
- *
- * MEI is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * MEI is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with MEI.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.github.invictum.mei;
 
-import com.github.invictum.mei.schedule.ScheduleFacility;
-import org.bukkit.Bukkit;
+import com.github.invictum.mei.backend.BackendProvider;
+import com.github.invictum.mei.channel.ChannelsFacility;
+import com.github.invictum.mei.command.Command;
+import com.github.invictum.mei.command.Result;
+import com.github.invictum.mei.entity.TaskEntity;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.logging.Logger;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class MeiPlugin extends JavaPlugin {
 
-    public static Logger log() {
-        return MeiPlugin.getPlugin(MeiPlugin.class).getLogger();
-    }
+    private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+    private ChannelsFacility channelsFacility;
 
     @Override
     public void onEnable() {
+        /* Prepare configuration */
         saveDefaultConfig();
-        getConfig().options().copyDefaults(true);
+        getConfig().options().copyHeader(true).copyDefaults(true);
         saveConfig();
+        /* Start executor facility */
+        long delay = Long.valueOf(getConfig().getString("interval"));
+        executor.scheduleWithFixedDelay(() -> {
+            for (TaskEntity task : BackendProvider.get().list()) {
+                Result result = new Command(task).execute();
+                if (result == Result.ALL_OK || result == Result.CONDITION_ERROR) {
+                    BackendProvider.get().delete(task.getId());
+                }
+            }
+        }, 0, delay, TimeUnit.MILLISECONDS);
 
-        if (!Backend.getInstance().initBackend()) {
-            log().warning("Can't establish connect to backend, so stopping plugin. Please, check config file.");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
-        ScheduleFacility.start();
+        /* Start channels */
+        channelsFacility = new ChannelsFacility(getConfig());
+        channelsFacility.start();
     }
 
     @Override
     public void onDisable() {
-        ScheduleFacility.shutdown();
-        Backend.getInstance().closeBackend();
+        channelsFacility.shutdown();
+        executor.shutdown();
     }
 }

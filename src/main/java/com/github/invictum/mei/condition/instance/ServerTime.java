@@ -1,13 +1,16 @@
-package com.github.invictum.mei.conditions.instance;
+package com.github.invictum.mei.condition.instance;
 
-import com.github.invictum.mei.MeiPlugin;
+import com.github.invictum.mei.Utils;
 
+/**
+ * Matches if current server time is more than specified
+ */
 public class ServerTime extends AbstractCondition {
 
     @Override
     public boolean check() {
         long requiredTime = Long.valueOf(expression());
-        return (System.currentTimeMillis() > requiredTime);
+        return (System.currentTimeMillis() >= requiredTime);
     }
 
     @Override
@@ -15,7 +18,7 @@ public class ServerTime extends AbstractCondition {
         try {
             Long.valueOf(expression());
         } catch (NumberFormatException ex) {
-            MeiPlugin.log().warning("Expression for 'server_time' is wrong");
+            Utils.getLogger().warning("Expression for 'server_time' is wrong");
             return false;
         }
         return true;

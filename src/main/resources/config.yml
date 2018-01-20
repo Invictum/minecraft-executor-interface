@@ -1,14 +1,46 @@
-# Backend type, supported: MySQL
-backend: "MySql"
-MySql:
+# Backend type, supported: Memory, Filesystem, Sql
+backend: "Memory"
+
+# Sql configuration example
+Sql:
   # MySQL connection url
-  connectionString: "jdbc:mysql://host:3306/database"
+  connectionString: "jdbc:mysql://host:3306/database?useSSL=false"
   # MySQL credentials
   username: "login"
   password: "password"
   # MySQL tables names
-  queue_table: "mei_queue"
-  schedule_table: "mei_schedule"
+  tasks_table: "mei_tasks"
+  conditions_table: "mei_conditions"
+
+# Filesystem configuration example
+Filesystem:
+  # directory where store a file
+  directory: "/path"
+
+# Channels configuration. Possible values are: API, SOCKET
+# Set [] to disable all channels
+Channels:
+ - "API"
+ - "SOCKET"
+
+# IP address to listen to
+ipAddress: "0.0.0.0"
+# Port where to bring up a channel facility
+port: "9090"
+
+# Security settings
+checkSigh: false
+# Token used to generate request sigh.
+# CAUTION: Redefine default value with strong random value
+securityToken: "a78cde7a-5c15-46f8-9178-74fb5d8631c2"
+# A list of comma separated IPs allowed to send requests.
+# If empty all IPs are allowed
+whitelistIps: []
+
+# Api channel base path
+apiPath: "/api"
+# Socket channel base path
+socketPath: "/socket"
 
 # Other settings
-interval: 60
+interval: 60000
