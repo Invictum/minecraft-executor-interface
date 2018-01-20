@@ -5,9 +5,9 @@ package com.github.invictum.mei.condition;
  */
 public interface Condition {
     /**
-     * Verifies condition for application
+     * Verifies is condition meets current criteria
      *
-     * @return true is condition is applicable
+     * @return true is meet
      */
     boolean check();
 

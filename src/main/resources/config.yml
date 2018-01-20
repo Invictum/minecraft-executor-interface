@@ -17,11 +17,9 @@ Filesystem:
   # directory where store a file
   directory: "/path"
 
-# Channels configuration. Possible values are: API, SOCKET
-# Set [] to disable all channels
+# Channels configuration. Possible values are: API or set [] to disable all channels
 Channels:
  - "API"
- - "SOCKET"
 
 # IP address to listen to
 ipAddress: "0.0.0.0"
@@ -30,7 +28,7 @@ port: "9090"
 
 # Security settings
 checkSigh: false
-# Token used to generate request sigh.
+# Token used to generate request sign.
 # CAUTION: Redefine default value with strong random value
 securityToken: "a78cde7a-5c15-46f8-9178-74fb5d8631c2"
 # A list of comma separated IPs allowed to send requests.

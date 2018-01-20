@@ -10,6 +10,10 @@ import java.util.logging.Logger;
  */
 public class Utils {
 
+    private Utils() {
+        // Disable constructor
+    }
+
     /**
      * Stops MEI plugin
      */

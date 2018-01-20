@@ -9,6 +9,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Constructs a set of conditions based on provided expressions
+ */
 public class ConditionBuilder {
 
     private static Hashtable<String, AbstractCondition> conditionList = new Hashtable<>();
@@ -20,6 +23,16 @@ public class ConditionBuilder {
         conditionList.put("user_online", new UserOnline());
     }
 
+    private ConditionBuilder() {
+        // Disable constructor
+    }
+
+    /**
+     * Assembles conditions based on expressions
+     *
+     * @param conditions a set of {@link ConditionEntity}s
+     * @return ready conditions models set
+     */
     public static Set<Condition> build(Set<ConditionEntity> conditions) {
         /* Check empty and null condition */
         if (conditions.stream().anyMatch(c -> c.getCondition() == null || c.getCondition().isEmpty())) {

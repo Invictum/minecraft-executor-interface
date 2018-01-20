@@ -5,15 +5,15 @@ package com.github.invictum.mei.command;
  */
 public enum Result {
     /**
-     * Command executed and condition was meet
+     * Command executed and all condition are meet
      */
     ALL_OK,
     /**
-     * Conditions is valid, but does not meet
+     * Conditions are valid, but do not meet
      */
     CONDITION_FAIL,
     /**
-     * Condition was invalid
+     * Conditions are invalid
      */
     CONDITION_ERROR
 }

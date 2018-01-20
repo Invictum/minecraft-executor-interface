@@ -14,6 +14,10 @@ public class BackendProvider {
 
     private static Backend backend = null;
 
+    private BackendProvider() {
+        // Disable constructor
+    }
+
     public static Backend get() {
         if (backend == null) {
             synchronized (BackendProvider.class) {

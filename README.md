@@ -11,7 +11,7 @@ Contribution
 ------------
 Apache Maven and JDK8 should be installed to contribute. To build plugin from sources, just emmit command in terminal with sources
 ```
-mvn clean package
+mvn clean package -Prelease
 ```
 This will build sources, run tests and produce plugin JAR file into `target/minecraft-executor-interface-1.0.0-SNAPSHOT-jar-with-dependencies.jar`
 

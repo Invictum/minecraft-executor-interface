@@ -14,13 +14,16 @@ import java.util.logging.Logger;
 /**
  * Checks requests HmacSHA256 sigh
  */
-public class CheckSighFilter implements Filter {
+public class CheckSignFilter implements Filter {
+
+    public static final String SIGN_HEADER = "Sign";
+    public static final String NONCE_HEADER = "Nonce";
 
     private Logger logger;
     private Mac hmacSHA256;
     private long lastNonce = 0;
 
-    public CheckSighFilter(String token, Logger logger) {
+    public CheckSignFilter(String token, Logger logger) {
         this.logger = logger;
         try {
             hmacSHA256 = Mac.getInstance("HmacSHA256");
@@ -34,20 +37,21 @@ public class CheckSighFilter implements Filter {
     @Override
     public void handle(Request request, Response response) {
         /* Check nonce */
-        if (request.headers("Nonce") == null || Long.valueOf(request.headers("Nonce")) <= lastNonce) {
+        if (request.headers(NONCE_HEADER) == null || Long.valueOf(request.headers(NONCE_HEADER)) <= lastNonce) {
             logger.warning("Request with bad Nonce detected");
             throw Spark.halt(403);
         }
         /* Check sigh header */
-        if (request.headers("Sigh") == null) {
+        if (request.headers(SIGN_HEADER) == null) {
             logger.warning("Request without Sigh header detected");
             throw Spark.halt(403);
         }
-        Long nonce = Long.valueOf(request.headers("Nonce"));
+        /* Calculate sign for message */
+        Long nonce = Long.valueOf(request.headers(NONCE_HEADER));
         byte[] data = (request.body() + nonce).getBytes();
         String sigh = Base64.getEncoder().encodeToString(hmacSHA256.doFinal(data));
         /* Check sigh value */
-        if (!request.headers("Sigh").contentEquals(sigh)) {
+        if (!request.headers(SIGN_HEADER).contentEquals(sigh)) {
             logger.warning("Request Sigh is wrong");
             throw Spark.halt(403);
         }

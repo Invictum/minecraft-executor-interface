@@ -40,10 +40,10 @@ public class ChannelsFacility {
         /* API channel setup section */
         if (channels.contains(API)) {
             String apiPath = config.getString(API_PATH, "/api");
-            if (config.getBoolean(CHECK_SIGH, false)) {
-                Spark.before(apiPath, new CheckSighFilter(config.getString(SECURITY_TOKEN), Utils.getLogger()));
-            }
             Spark.before(apiPath, new WhiteListFilter(config.getStringList(WHITELIST_IPS)));
+            if (config.getBoolean(CHECK_SIGH, false)) {
+                Spark.before(apiPath, new CheckSignFilter(config.getString(SECURITY_TOKEN), Utils.getLogger()));
+            }
             Spark.post(apiPath, "application/json", new RestApiRoute());
         }
     }

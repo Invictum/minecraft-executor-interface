@@ -11,6 +11,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Plugin entry point class
+ */
 public class MeiPlugin extends JavaPlugin {
 
     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
@@ -18,12 +21,12 @@ public class MeiPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        /* Prepare configuration */
+        /* Prepare plugin configuration */
         saveDefaultConfig();
         getConfig().options().copyHeader(true).copyDefaults(true);
         saveConfig();
         /* Start executor facility */
-        long delay = Long.valueOf(getConfig().getString("interval"));
+        long delay = getConfig().getLong("interval", 60000);
         executor.scheduleWithFixedDelay(() -> {
             for (TaskEntity task : BackendProvider.get().list()) {
                 Result result = new Command(task).execute();
@@ -32,7 +35,6 @@ public class MeiPlugin extends JavaPlugin {
                 }
             }
         }, 0, delay, TimeUnit.MILLISECONDS);
-
         /* Start channels */
         channelsFacility = new ChannelsFacility(getConfig());
         channelsFacility.start();
