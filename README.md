@@ -1,4 +1,5 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e7c5c1f4629c4d849181de71fe54ed0d)](https://www.codacy.com/app/zim182/minecraft-executor-interface?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Invictum/minecraft-executor-interface&amp;utm_campaign=Badge_Grade)
+[![BukkitDev](https://img.shields.io/badge/BukkitDev-v1.0.0-orange.svg)](https://dev.bukkit.org/projects/mei)
 
 Minecraft Executor Interface (MEI)
 =======================================
