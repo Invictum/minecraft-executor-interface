@@ -12,7 +12,7 @@ import spark.Spark;
 public class RestApiRoute implements Route {
 
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
         TaskEntity task = Json.get().fromJson(request.body(), TaskEntity.class);
         if (task.getCommand() == null) {
             return Spark.halt(500);

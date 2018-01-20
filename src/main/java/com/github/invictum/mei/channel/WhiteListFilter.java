@@ -8,7 +8,7 @@ import spark.Spark;
 import java.util.List;
 
 /**
- * Checks request sigh to enforce security
+ * Checks requester IP to enforce security
  */
 public class WhiteListFilter implements Filter {
 
@@ -19,7 +19,7 @@ public class WhiteListFilter implements Filter {
     }
 
     @Override
-    public void handle(Request request, Response response) throws Exception {
+    public void handle(Request request, Response response) {
         if (!ips.isEmpty() && !ips.contains(request.ip())) {
             throw Spark.halt(403);
         }

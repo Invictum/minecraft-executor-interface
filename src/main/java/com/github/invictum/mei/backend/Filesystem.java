@@ -1,10 +1,8 @@
 package com.github.invictum.mei.backend;
 
 import com.github.invictum.mei.Json;
-import com.github.invictum.mei.MeiPlugin;
 import com.github.invictum.mei.Utils;
 import com.github.invictum.mei.entity.TaskEntity;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,15 +22,16 @@ public class Filesystem implements Backend {
     private static final String DIRECTORY_OPTION = "directory";
     private static final String EXT = "json";
 
-    private static final Logger LOGGER = JavaPlugin.getPlugin(MeiPlugin.class).getLogger();
     private Path root;
+    private Logger logger;
 
-    public Filesystem(Map<String, Object> options) {
+    public Filesystem(Map<String, Object> options, Logger logger) {
+        this.logger = logger;
         /* Check directory option */
         try {
             root = Paths.get((String) options.get(DIRECTORY_OPTION));
         } catch (InvalidPathException e) {
-            LOGGER.warning("Unable to determinate directory. Check configuration file");
+            logger.warning("Unable to determinate directory. Check configuration file");
             Utils.disablePlugin();
         }
         /* Create storage directory */
@@ -40,7 +39,7 @@ public class Filesystem implements Backend {
             try {
                 Files.createDirectory(root);
             } catch (IOException e) {
-                LOGGER.warning("Unable to create directory at " + root.toString() + " Check permissions");
+                logger.warning("Unable to create directory at " + root.toString() + " Check permissions");
                 Utils.disablePlugin();
             }
         }
@@ -53,7 +52,7 @@ public class Filesystem implements Backend {
             Files.createFile(path);
             Files.write(path, Json.get().toJson(task).getBytes());
         } catch (IOException e) {
-            LOGGER.warning("Failed to store new task with " + task.getId() + " id");
+            logger.warning("Failed to store new task with " + task.getId() + " id");
         }
     }
 
@@ -67,13 +66,13 @@ public class Filesystem implements Backend {
                     task.setId(path.getFileName().toString());
                     return task;
                 } catch (Exception e) {
-                    LOGGER.warning("Unable to parse " + path.getFileName().toString());
+                    logger.warning("Unable to parse " + path.getFileName().toString());
                     delete(path.getFileName().toString());
                     return null;
                 }
             }).filter(Objects::nonNull).collect(Collectors.toSet());
         } catch (IOException e) {
-            LOGGER.warning("Unable to list files in " + root.toString());
+            logger.warning("Unable to list files in " + root.toString());
             return new HashSet<>();
         }
     }
@@ -85,7 +84,7 @@ public class Filesystem implements Backend {
                 try {
                     Files.deleteIfExists(path);
                 } catch (IOException e) {
-                    LOGGER.warning("Unable to remove task with " + path.getFileName().toString() + " id");
+                    logger.warning("Unable to remove task with " + path.getFileName().toString() + " id");
                 }
             });
         }

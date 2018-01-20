@@ -1,5 +1,6 @@
 package com.github.invictum.mei.channel;
 
+import com.github.invictum.mei.Utils;
 import org.bukkit.configuration.file.FileConfiguration;
 import spark.Spark;
 
@@ -40,7 +41,7 @@ public class ChannelsFacility {
         if (channels.contains(API)) {
             String apiPath = config.getString(API_PATH, "/api");
             if (config.getBoolean(CHECK_SIGH, false)) {
-                Spark.before(apiPath, new CheckSighFilter(config.getString(SECURITY_TOKEN)));
+                Spark.before(apiPath, new CheckSighFilter(config.getString(SECURITY_TOKEN), Utils.getLogger()));
             }
             Spark.before(apiPath, new WhiteListFilter(config.getStringList(WHITELIST_IPS)));
             Spark.post(apiPath, "application/json", new RestApiRoute());
