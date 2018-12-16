@@ -1,11 +1,16 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e7c5c1f4629c4d849181de71fe54ed0d)](https://www.codacy.com/app/zim182/minecraft-executor-interface?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Invictum/minecraft-executor-interface&amp;utm_campaign=Badge_Grade)
+[![BukkitDev](https://img.shields.io/badge/BukkitDev-v1.0.0-orange.svg)](https://dev.bukkit.org/projects/mei)
 
 Minecraft Executor Interface (MEI)
 =======================================
 
 MEI is a Minecraft plugin provides ability to send commands for execution from external sources.
 
-For configuration details refer to [project documentation](https://dev.bukkit.org/projects/mei) page on dev.bukkit.org
+Configuration and Support
+------------
+For configuration details refer to [project documentation](https://github.com/Invictum/minecraft-executor-interface/wiki) page at Wiki section
+
+Check [project page](https://dev.bukkit.org/projects/mei) at dev.bukkit.org for support
 
 Contribution
 ------------
